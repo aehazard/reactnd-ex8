@@ -23,14 +23,6 @@ class NewUserForm extends Component {
     }
   }
 
-  getButtonStatus = () => {
-    if (this.isFormComplete()) {
-      return "enabled"
-    } else {
-      return "disabled"
-    }
-  }
-
   isFormComplete = () => {
     if (this.state.lastName.length > 0 &&
         this.state.firstName.length > 0 &&
@@ -62,6 +54,11 @@ class NewUserForm extends Component {
     } else {
       console.log("Username is not a duplicate")
       this.props.onAddUser({ userName, lastName, firstName })
+      this.setState(()=>({
+        userName: '',
+        lastName: '',
+        firstName: ''
+      }))
     }
   }
   

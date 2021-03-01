@@ -17,6 +17,14 @@ class NewUserForm extends Component {
     }
   }
 
+  getButtonStatus = () => {
+    if (this.isFormComplete()) {
+      return "enabled"
+    } else {
+      return "disabled"
+    }
+  }
+
   isFormComplete = () => {
     if (this.state.lastName.length > 0 &&
         this.state.firstName.length > 0 &&
@@ -27,48 +35,38 @@ class NewUserForm extends Component {
     }
   }
 
-  handleInputChange = (event) => {
-    let field = event.target.key
-    if (field = 'userName') {
-      this.setState((prevState)=>({
-        userName: event.target.value,
+  handleInputChange = event => {
+    const {key, value} = event.target;
+    console.log(`Set ${value} as ${key}`)
+    this.setState(()=>({
+        [key]: value,
         duplicateError: false,
         formComplete: this.isFormComplete()
       }))
-    } else if (field = 'lastName') {
-      this.setState((prevState)=>({
-        lastName: event.target.value,
-        duplicateError: false,
-        formComplete: this.isFormComplete()
-      }))
-    } else if (field = 'firstName') {
-      this.setState((prevState)=>({
-        firstName: event.target.value,
-        duplicateError: false,
-        formComplete: this.isFormComplete()
-      }))
-    }
   }
 
   evaluateNewUser = () => {
     let { userName, lastName, firstName } = this.state
     if (userName in this.props.users) {
+      console.log("Username is a duplicate")
       this.setState((prevState)=>({
         duplicateError: true
       }))
     } else {
+      console.log("Username is not a duplicate")
       this.props.addUser({ userName, lastName, firstName })
     }
   }
   
   render () {
+    const { lastName, firstName, userName } = this.state
     return (
       <div>
-        <input key='lastName' placeholder='Last Name' value={this.state.lastName} onChange={this.handeInputChange}/>
-        <input key='firstName' placeholder='First Name' value={this.state.firstName} onChange={this.handeInputChange}/>
-        <input key='userName' placeholder='Username' value={this.state.userName} onChange={this.handeInputChange}/>
+        <input type="text" key='lastName' placeholder='Last Name' value={lastName} onChange={this.handeInputChange}/>
+        <input type="text" key='firstName' placeholder='First Name' value={firstName} onChange={this.handeInputChange}/>
+        <input type="text" key='userName' placeholder='Username' value={userName} onChange={this.handeInputChange}/>
         {this.formError()}
-        <button onClick={this.evaluateUser}>
+        <button onClick={this.evaluateUser} disabled={this.state.formComplete.toString()}>
           Add User
         </button>
       </div>

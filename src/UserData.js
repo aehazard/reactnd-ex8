@@ -5,6 +5,8 @@ import NewUserForm from './NewUserForm';
 class UserData extends Component {
   state = {
     users: [],
+    gameToggleOn: true,
+    toggleText: "Hide games played"
   }
   
   addUser = (userInfo) => {
@@ -22,11 +24,27 @@ class UserData extends Component {
     })
   }
 
+  toggleSwitch = (event) => {
+    const isChecked = event.target.checked
+    console.log("Switching visibility of games played")
+    this.setState(() => ({
+      gameToggleOn: isChecked,
+      toggleText: isChecked ? "Hide games played" : "Show games played"
+    }))
+  }
+
   render() {
     return (
       <div>
+       <div className="switch-container">
+        <label className="switch">
+          <input type="checkbox" checked={this.state.gameToggleOn} onChange={this.toggleSwitch}/>
+          <span className="slider round"></span>
+        </label>
+       <span className="switch-label">{this.state.toggleText}</span>
+       </div>
         <NewUserForm users={this.state.users} onAddUser = {this.addUser}/>
-        <UserList users={this.state.users}/>
+        <UserList users={this.state.users} gameToggleOn={this.state.gameToggleOn}/>
       </div>
     )
   }

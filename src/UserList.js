@@ -7,7 +7,9 @@ class UserList extends Component {
       <div>
         <ul>
           {users.map((user) => (
-            <li key={user.userName}>{user.userName} {user.firstName} {user.lastName}</li>
+            <li key={user.userName}>
+              {user.userName} {user.firstName} {user.lastName} {this.props.gameToggleOn && user.gamesPlayed}
+            </li>
           ))}
         </ul>
       </div>

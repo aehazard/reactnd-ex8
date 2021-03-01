@@ -8,7 +8,15 @@ class NewUserForm extends Component {
   }
 
   formError = () => {
-    if (this.state.duplicateError) {
+    const { users } = this.props
+    let duplicateError = false
+    for (const user of users) {
+      if (this.state.userName === user.userName) {
+        duplicateError = true
+        break
+      }
+    }
+    if (duplicateError) {
           return (<p>Error: Username is already in use</p>)
     } else {
       return
@@ -53,7 +61,7 @@ class NewUserForm extends Component {
       }))
     } else {
       console.log("Username is not a duplicate")
-      this.props.addUser({ userName, lastName, firstName })
+      this.props.onAddUser({ userName, lastName, firstName })
     }
   }
   
@@ -65,7 +73,7 @@ class NewUserForm extends Component {
         <input type="text" name='firstName' placeholder='First Name' value={firstName} onChange={this.handleInputChange}/>
         <input type="text" name='userName' placeholder='Username' value={userName} onChange={this.handleInputChange}/>
         {this.formError()}
-        <button onClick={this.evaluateUser} disabled={this.isFormComplete()}>
+        <button onClick={this.evaluateNewUser} disabled={this.isFormComplete()}>
           Add User
         </button>
       </div>

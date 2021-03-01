@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 class NewUserForm extends Component {
   state = {
-    formComplete: false,
-    duplicateError: false,
     lastName: '',
     firstName: '',
     userName: ''
@@ -29,18 +27,19 @@ class NewUserForm extends Component {
     if (this.state.lastName.length > 0 &&
         this.state.firstName.length > 0 &&
         this.state.userName.length > 0) {
-      return true
-    } else {
+      console.log("Form is complete")
       return false
+    } else {
+      console.log("Form is not complete")
+      return true
     }
   }
 
   handleInputChange = event => {
-    const {key, value} = event.target;
-    console.log(`Set ${value} as ${key}`)
+    const {name, value} = event.target;
+    console.log(`Set ${value} as ${name}`)
     this.setState(()=>({
-        [key]: value,
-        duplicateError: false,
+        [name]: value,
         formComplete: this.isFormComplete()
       }))
   }
@@ -62,11 +61,11 @@ class NewUserForm extends Component {
     const { lastName, firstName, userName } = this.state
     return (
       <div>
-        <input type="text" key='lastName' placeholder='Last Name' value={lastName} onChange={this.handeInputChange}/>
-        <input type="text" key='firstName' placeholder='First Name' value={firstName} onChange={this.handeInputChange}/>
-        <input type="text" key='userName' placeholder='Username' value={userName} onChange={this.handeInputChange}/>
+        <input type="text" name='lastName' placeholder='Last Name' value={lastName} onChange={this.handleInputChange}/>
+        <input type="text" name='firstName' placeholder='First Name' value={firstName} onChange={this.handleInputChange}/>
+        <input type="text" name='userName' placeholder='Username' value={userName} onChange={this.handleInputChange}/>
         {this.formError()}
-        <button onClick={this.evaluateUser} disabled={this.state.formComplete.toString()}>
+        <button onClick={this.evaluateUser} disabled={this.isFormComplete()}>
           Add User
         </button>
       </div>
